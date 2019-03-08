@@ -283,6 +283,23 @@ public class IoTDBConfig {
     return zoneID.toString();
   }
 
+  public void updateConfigForPath(){
+    // bufferwrite
+    bufferWriteDirs[0] = new File(this.dataDir,"bufferwrite").getPath();
+    // overflowwrite
+    overflowDataDir = new File(this.dataDir,"overflow").getPath();
+    // system
+    sysDir = new File(this.dataDir,"system").getPath();
+    // wal
+    walDir = new File(this.dataDir,"wal").getPath();
+    // wal folder
+    walFolder = new File(this.walDir,"wal").getPath();
+    // filenode
+    fileNodeDir = new File(this.dataDir,"filenode").getPath();
+    // metadata
+    metadataDir = new File(this.dataDir,"metadata").getPath();
+  }
+
   public void updatePath() {
     confirmMultDirStrategy();
 

@@ -238,7 +238,7 @@ public class FileNodeManager implements IStatistic, IService {
   /**
    * recovery the filenode processor.
    */
-  public void recovery() {
+  public FileNodeManager recovery() {
 
     try {
       List<String> filenodeNames = MManager.getInstance().getAllFileNames();
@@ -258,6 +258,7 @@ public class FileNodeManager implements IStatistic, IService {
     } catch (PathErrorException | FileNodeManagerException | FileNodeProcessorException e) {
       LOGGER.error("Restore all FileNode failed, the reason is {}", e.getMessage());
     }
+    return null;
   }
 
   /**

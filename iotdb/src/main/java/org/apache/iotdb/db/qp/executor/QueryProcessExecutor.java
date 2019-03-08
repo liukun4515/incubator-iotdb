@@ -34,6 +34,10 @@ import org.apache.iotdb.tsfile.file.metadata.enums.TSDataType;
 import org.apache.iotdb.tsfile.read.common.Path;
 import org.apache.iotdb.tsfile.read.expression.IExpression;
 import org.apache.iotdb.tsfile.read.expression.QueryExpression;
+import org.apache.iotdb.tsfile.read.expression.impl.GlobalTimeExpression;
+import org.apache.iotdb.tsfile.read.filter.TimeFilter;
+import org.apache.iotdb.tsfile.read.filter.basic.Filter;
+import org.apache.iotdb.tsfile.read.filter.factory.FilterFactory;
 import org.apache.iotdb.tsfile.read.query.dataset.QueryDataSet;
 import org.apache.iotdb.tsfile.utils.Pair;
 
@@ -51,6 +55,29 @@ public abstract class QueryProcessExecutor {
     QueryExpression queryExpression = QueryExpression.create().setSelectSeries(queryPlan.getPaths())
         .setExpression(queryPlan.getExpression());
 
+    return queryRouter.query(queryExpression);
+  }
+
+  public QueryDataSet timeRangeQuery(String timeseries,long startTime,long endTime)
+      throws IOException, FileNodeManagerException {
+    // construct the query expression
+    // check the startTime and endTime
+    QueryExpression queryExpression = QueryExpression.create();
+    queryExpression.addSelectedPath(new Path(timeseries));
+    Filter filter = FilterFactory.and(TimeFilter.gtEq(startTime),TimeFilter.ltEq(endTime));
+    IExpression iExpression = new GlobalTimeExpression(filter);
+    queryExpression.setExpression(iExpression);
+    return processQuery(queryExpression);
+  }
+
+  /**
+   * Query function for time range query
+   * @param queryExpression
+   * @return
+   * @throws IOException
+   * @throws FileNodeManagerException
+   */
+  private QueryDataSet processQuery(QueryExpression queryExpression) throws IOException, FileNodeManagerException{
     return queryRouter.query(queryExpression);
   }
 
