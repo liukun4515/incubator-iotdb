@@ -42,7 +42,7 @@ public class IoTDBConfig {
   /**
    * Is the write ahead log enable.
    */
-  public boolean enableWal = false;
+  public boolean enableWal = true;
 
   /**
    * When a certain amount of write ahead logs is reached, they will be flushed to the disk. It is
