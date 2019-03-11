@@ -594,6 +594,13 @@ public class FileNodeManager implements IStatistic, IService {
       LOGGER.debug("Get the FileNodeProcessor: filenode is {}, begin query.",
           fileNodeProcessor.getProcessorName());
       int token = fileNodeProcessor.addMultiPassLock();
+      if (!fileNodeProcessor.hasOverflowProcessor()) {
+        try {
+          fileNodeProcessor.getOverflowProcessor(fileNodeProcessor.getProcessorName());
+        } catch (IOException e) {
+          throw new FileNodeManagerException(e);
+        }
+      }
       return token;
     } finally {
       fileNodeProcessor.writeUnlock();
