@@ -214,7 +214,7 @@ public class IoTDBEngine implements ITSEngine {
   }
 
   @Override
-  public QueryDataSet query(String timeseries, long startTime, long endTime) throws IOException {
+  public synchronized QueryDataSet query(String timeseries, long startTime, long endTime) throws IOException {
     try {
       return queryProcessor.getExecutor().timeRangeQuery(timeseries, startTime, endTime);
     } catch (FileNodeManagerException e) {

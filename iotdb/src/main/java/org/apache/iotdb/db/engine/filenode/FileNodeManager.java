@@ -591,6 +591,7 @@ public class FileNodeManager implements IStatistic, IService {
   public int beginQuery(String deviceId) throws FileNodeManagerException {
     FileNodeProcessor fileNodeProcessor = getProcessor(deviceId, true);
     try {
+      System.out.println(Thread.currentThread().getId()+" begin query");
       LOGGER.debug("Get the FileNodeProcessor: filenode is {}, begin query.",
           fileNodeProcessor.getProcessorName());
       int token = fileNodeProcessor.addMultiPassLock();
@@ -612,6 +613,7 @@ public class FileNodeManager implements IStatistic, IService {
    */
   public QueryDataSource query(SingleSeriesExpression seriesExpression)
       throws FileNodeManagerException {
+    System.out.println(Thread.currentThread().getId()+" query.....");
     String deviceId = seriesExpression.getSeriesPath().getDevice();
     String measurementId = seriesExpression.getSeriesPath().getMeasurement();
     FileNodeProcessor fileNodeProcessor = getProcessor(deviceId, false);
