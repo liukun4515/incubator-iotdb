@@ -38,6 +38,8 @@ public class CheckOverflow {
         e.printStackTrace();
       } catch (Exception e) {
         LOGGER.error("Catch the RE Exception, Recovery the overflow dir: {}, the reason is {}.", childDir.getPath(), e);
+      }catch (Throwable t){
+        LOGGER.error("Catch the throwable, Recovery the overflow dir: {}, the reason is {}.", childDir.getPath(), t);
       }
     }
   }
