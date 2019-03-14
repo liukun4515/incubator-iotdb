@@ -29,18 +29,21 @@ public class CheckOverflow {
     String overflowDirPath = args[0];
     File overflowDir = new File(overflowDirPath);
     File[] childrenDiroverflowDir = overflowDir.listFiles();
+
     for (File childDir : childrenDiroverflowDir) {
       try {
         recovery(childDir);
       } catch (IOException e) {
-        LOGGER.error("Recovery the overflow dir: {}, the reason is {}.", childDir.getPath(), e);
+        LOGGER.error("Cath the IO Exception, Recovery the overflow dir: {}, the reason is {}.", childDir.getPath(), e);
         e.printStackTrace();
+      } catch (Exception e) {
+        LOGGER.error("Catch the RE Exception, Recovery the overflow dir: {}, the reason is {}.", childDir.getPath(), e);
       }
     }
   }
 
   public static void recovery(File overflowChildDir) throws IOException {
-    LOGGER.info("Start recovering the overflow {}.", overflowChildDir.getPath());
+    LOGGER.info("Start recovering the overflow {}", overflowChildDir.getPath());
     // overflow child dir 下边有0和1
     OverflowResource workResource;
     OverflowResource mergeResource;
@@ -49,6 +52,8 @@ public class CheckOverflow {
     // 只有一个文件
     if (subFilePaths.length == 1) {
       long count = Long.valueOf(subFilePaths[0]);
+      LOGGER.info("Recovery the workDir : {}",
+          new File(overflowChildDir.getPath(), String.valueOf(count)).getPath());
       workResource = new OverflowResource(overflowChildDir.getPath(), String.valueOf(count));
       LOGGER
           .info("The overflow processor {} recover from work status.", overflowChildDir.getPath());
@@ -61,7 +66,11 @@ public class CheckOverflow {
         count2 = temp;
       }
       // work dir > merge dir
+      LOGGER.info("Recovery the workDir : {}",
+          new File(overflowChildDir.getPath(), String.valueOf(count2)).getPath());
       workResource = new OverflowResource(overflowChildDir.getPath(), String.valueOf(count2));
+      LOGGER.info("Recovery the mergeDir : {}",
+          new File(overflowChildDir.getPath(), String.valueOf(count2)).getPath());
       mergeResource = new OverflowResource(overflowChildDir.getPath(), String.valueOf(count1));
       LOGGER
           .info("The overflow processor {} recover from merge status.", overflowChildDir.getPath());
