@@ -27,6 +27,10 @@ public class ErrorDebugException extends RuntimeException {
 
   private static final long serialVersionUID = -1123099620556170447L;
 
+  public ErrorDebugException(Throwable cause) {
+    super(cause);
+  }
+
   public ErrorDebugException(String msg) {
     super(msg);
   }
