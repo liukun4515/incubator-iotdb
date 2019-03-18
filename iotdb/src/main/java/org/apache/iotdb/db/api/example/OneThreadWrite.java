@@ -38,6 +38,7 @@ public class OneThreadWrite {
   public static void main(String[] args) throws IOException, IoTDBEngineException {
     File file = new File("testdb");
     IoTDBOptions options = new IoTDBOptions();
+    options.setWalPath("/Users/liukun/Documents/experiment/incubator-iotdb/wal");
     ITSEngine db = new IoTDBEngine(file, options);
     // open the database
     db.openOrCreate();

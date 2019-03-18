@@ -125,8 +125,7 @@ public class IoTDBEngine implements ITSEngine {
     // data 目录的path
     ioTDBConfig.dataDir = file.getPath();
     ioTDBConfig.updateConfigForPath();
-    ioTDBConfig.walDir = options.getWalPath();
-    ioTDBConfig.updateWalPath();
+    ioTDBConfig.walFolder = options.getWalPath();
     // update options
     ioTDBConfig.updateOptions(options);
     // 恢复MManager
