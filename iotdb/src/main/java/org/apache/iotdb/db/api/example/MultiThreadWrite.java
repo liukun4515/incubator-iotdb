@@ -7,7 +7,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -168,8 +168,9 @@ public class MultiThreadWrite {
     while (dataSet.hasNext()) {
       count++;
       RowRecord row = dataSet.next();
-      System.out.println(row);
+      System.out.println("。。。。。。。" + row);
     }
+    System.out.println("count......" + count);
     engine.close();
     // delete all data
     FileUtils.deleteDirectory(file);

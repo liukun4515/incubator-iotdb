@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
 import org.apache.iotdb.db.api.ITSEngine;
 import org.apache.iotdb.db.api.IoTDBEngineException;
 import org.apache.iotdb.db.api.IoTDBOptions;
@@ -37,6 +38,7 @@ public class OneThreadWrite {
 
   public static void main(String[] args) throws IOException, IoTDBEngineException {
     File file = new File("testdb");
+    FileUtils.deleteDirectory(file);
     IoTDBOptions options = new IoTDBOptions();
     options.setWalPath("/Users/liukun/Documents/experiment/incubator-iotdb/wal");
     ITSEngine db = new IoTDBEngine(file, options);
@@ -75,5 +77,6 @@ public class OneThreadWrite {
     }
     System.out.println(count);
     db.close();
+    FileUtils.deleteDirectory(file);
   }
 }
