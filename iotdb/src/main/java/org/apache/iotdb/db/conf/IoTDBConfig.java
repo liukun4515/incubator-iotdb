@@ -7,7 +7,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -22,6 +22,7 @@ import java.io.File;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.iotdb.db.api.IoTDBOptions;
 import org.apache.iotdb.db.metadata.MManager;
 
 public class IoTDBConfig {
@@ -283,21 +284,35 @@ public class IoTDBConfig {
     return zoneID.toString();
   }
 
-  public void updateConfigForPath(){
-    // bufferwrite
-    bufferWriteDirs[0] = new File(this.dataDir,"bufferwrite").getPath();
-    // overflowwrite
-    overflowDataDir = new File(this.dataDir,"overflow").getPath();
-    // system
-    sysDir = new File(this.dataDir,"system").getPath();
+  public void updateOptions(IoTDBOptions options) {
+    this.periodTimeForFlush = options.getPeriodTimeForFlush();
+    this.periodTimeForMerge = options.getPeriodTimeForMerge();
+
+    this.bufferwriteMetaSizeThreshold = options.getBufferwriteMetaSizeThreshold();
+    this.bufferwriteFileSizeThreshold = options.getBufferwriteFileSizeThreshold();
+
+    this.overflowMetaSizeThreshold = options.getOverflowMetaSizeThreshold();
+    this.overflowFileSizeThreshold = options.getOverflowFileSizeThreshold();
+  }
+
+  public void updateWalPath() {
     // wal
-    walDir = new File(this.dataDir,"wal").getPath();
+    walDir = new File(this.dataDir, "wal").getPath();
     // wal folder
-    walFolder = new File(this.walDir,"wal").getPath();
+    walFolder = new File(this.walDir, "wal").getPath();
+  }
+
+  public void updateConfigForPath() {
+    // bufferwrite
+    bufferWriteDirs[0] = new File(this.dataDir, "bufferwrite").getPath();
+    // overflowwrite
+    overflowDataDir = new File(this.dataDir, "overflow").getPath();
+    // system
+    sysDir = new File(this.dataDir, "system").getPath();
     // filenode
-    fileNodeDir = new File(this.dataDir,"filenode").getPath();
+    fileNodeDir = new File(this.dataDir, "filenode").getPath();
     // metadata
-    metadataDir = new File(this.dataDir,"metadata").getPath();
+    metadataDir = new File(this.dataDir, "metadata").getPath();
   }
 
   public void updatePath() {

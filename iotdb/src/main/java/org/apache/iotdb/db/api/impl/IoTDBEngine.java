@@ -7,7 +7,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -60,7 +60,7 @@ public class IoTDBEngine implements ITSEngine {
 
     private DBLock(File file) throws IOException {
       file.mkdirs();
-      this.lockFile = new File(file,"LOCK");
+      this.lockFile = new File(file, "LOCK");
       this.fileChannel = (new RandomAccessFile(lockFile, "rw")).getChannel();
       try {
         this.fileLock = this.fileChannel.tryLock();
@@ -94,7 +94,6 @@ public class IoTDBEngine implements ITSEngine {
   private DBLock lock;
   private IoTDBOptions options;
   private MManager mManager;
-  private TSFileConfig tsFileConfig;
   private IoTDBConfig ioTDBConfig;
   private FileNodeManager fileNodeManager;
   private OverflowQPExecutor overflowQPExecutor;
@@ -126,7 +125,10 @@ public class IoTDBEngine implements ITSEngine {
     // data 目录的path
     ioTDBConfig.dataDir = file.getPath();
     ioTDBConfig.updateConfigForPath();
-
+    ioTDBConfig.walDir = options.getWalPath();
+    ioTDBConfig.updateWalPath();
+    // update options
+    ioTDBConfig.updateOptions(options);
     // 恢复MManager
     mManager = MManager.getInstance();
     // 恢复FileNodeManager
@@ -192,15 +194,21 @@ public class IoTDBEngine implements ITSEngine {
 
   @Override
   public void close() throws IOException {
-      // close metadata
-      MManager.getInstance().flushObjectToFile();
-      // close merge and close service
-      CloseMergeService.getInstance().stop();
-      // close reader manager
-      FileReaderManager.getInstance().stop();
-      FileReaderManager.getInstance().closeAndRemoveAllOpenedReaders();
-      MultiFileLogNodeManager.getInstance().stop();
-      this.lock.release();
+    // close all filenode manger
+    try {
+      FileNodeManager.getInstance().closeAll();
+    } catch (FileNodeManagerException e) {
+      e.printStackTrace();
+    }
+    // close metadata
+    MManager.getInstance().flushObjectToFile();
+    // close merge and close service
+    CloseMergeService.getInstance().stop();
+    // close reader manager
+    FileReaderManager.getInstance().stop();
+    FileReaderManager.getInstance().closeAndRemoveAllOpenedReaders();
+    MultiFileLogNodeManager.getInstance().stop();
+    this.lock.release();
   }
 
   @Override
@@ -214,7 +222,8 @@ public class IoTDBEngine implements ITSEngine {
   }
 
   @Override
-  public synchronized QueryDataSet query(String timeseries, long startTime, long endTime) throws IOException {
+  public synchronized QueryDataSet query(String timeseries, long startTime, long endTime)
+      throws IOException {
     try {
       return queryProcessor.getExecutor().timeRangeQuery(timeseries, startTime, endTime);
     } catch (FileNodeManagerException e) {
@@ -241,11 +250,11 @@ public class IoTDBEngine implements ITSEngine {
   public void addTimeSeries(String path, String dataType, String encoding, String[] args)
       throws IOException {
     try {
-      mManager.addPathToMTree(path,dataType,encoding,args);
+      mManager.addPathToMTree(path, dataType, encoding, args);
     } catch (PathErrorException e) {
       e.printStackTrace();
       throw new IOException(e);
-    }  catch (MetadataArgsErrorException e) {
+    } catch (MetadataArgsErrorException e) {
       e.printStackTrace();
       throw new IOException(e);
     }
