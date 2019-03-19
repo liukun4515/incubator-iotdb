@@ -1538,7 +1538,7 @@ public class FileNodeProcessor extends Processor implements IStatistic {
             seriesWriterImpl.writeToFileWriter(fileIoWriter);
           }
         } finally {
-          seriesReader.close();
+          //seriesReader.close();
         }
       }
       if (isRowGroupHasData) {
