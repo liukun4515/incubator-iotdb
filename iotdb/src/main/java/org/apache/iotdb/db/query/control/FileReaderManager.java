@@ -59,44 +59,44 @@ public class FileReaderManager implements IService {
    */
   private ConcurrentHashMap<String, AtomicInteger> referenceMap;
 
-  private ScheduledExecutorService executorService;
+  //private ScheduledExecutorService executorService;
 
   private FileReaderManager() {
     fileReaderMap = new ConcurrentHashMap<>();
     referenceMap = new ConcurrentHashMap<>();
-    executorService = IoTDBThreadPoolFactory.newScheduledThreadPool(1,
-        "opended-files-manager");
-
-    clearUnUsedFilesInFixTime();
+//    executorService = IoTDBThreadPoolFactory.newScheduledThreadPool(1,
+//        "opended-files-manager");
+//
+//    clearUnUsedFilesInFixTime();
   }
 
   public static FileReaderManager getInstance() {
     return FileReaderManagerHelper.INSTANCE;
   }
 
-  private void clearUnUsedFilesInFixTime() {
-
-    long examinePeriod = IoTDBDescriptor.getInstance().getConfig().cacheFileReaderClearPeriod;
-
-    executorService.scheduleAtFixedRate(() -> {
-      synchronized (this) {
-        for (Map.Entry<String, TsFileSequenceReader> entry : fileReaderMap.entrySet()) {
-          TsFileSequenceReader reader = entry.getValue();
-          int referenceNum = referenceMap.get(entry.getKey()).get();
-
-          if (referenceNum == 0) {
-            try {
-              reader.close();
-            } catch (IOException e) {
-              LOGGER.error("Can not close TsFileSequenceReader {} !", reader.getFileName());
-            }
-            fileReaderMap.remove(entry.getKey());
-            referenceMap.remove(entry.getKey());
-          }
-        }
-      }
-    }, 0, examinePeriod, TimeUnit.MILLISECONDS);
-  }
+//  private void clearUnUsedFilesInFixTime() {
+//
+//    long examinePeriod = IoTDBDescriptor.getInstance().getConfig().cacheFileReaderClearPeriod;
+//
+//    executorService.scheduleAtFixedRate(() -> {
+//      synchronized (this) {
+//        for (Map.Entry<String, TsFileSequenceReader> entry : fileReaderMap.entrySet()) {
+//          TsFileSequenceReader reader = entry.getValue();
+//          int referenceNum = referenceMap.get(entry.getKey()).get();
+//
+//          if (referenceNum == 0) {
+//            try {
+//              reader.close();
+//            } catch (IOException e) {
+//              LOGGER.error("Can not close TsFileSequenceReader {} !", reader.getFileName());
+//            }
+//            fileReaderMap.remove(entry.getKey());
+//            referenceMap.remove(entry.getKey());
+//          }
+//        }
+//      }
+//    }, 0, examinePeriod, TimeUnit.MILLISECONDS);
+//  }
 
   /**
    * Get the reader of the file(tsfile or unseq tsfile) indicated by filePath. If the reader already
@@ -178,16 +178,16 @@ public class FileReaderManager implements IService {
 
   @Override
   public void stop() {
-    if (executorService == null || executorService.isShutdown()) {
-      return;
-    }
-
-    executorService.shutdown();
-    try {
-      executorService.awaitTermination(10, TimeUnit.SECONDS);
-    } catch (InterruptedException e) {
-      LOGGER.error("StatMonitor timing service could not be shutdown.", e);
-    }
+//    if (executorService == null || executorService.isShutdown()) {
+//      return;
+//    }
+//
+//    executorService.shutdown();
+//    try {
+//      executorService.awaitTermination(10, TimeUnit.SECONDS);
+//    } catch (InterruptedException e) {
+//      LOGGER.error("StatMonitor timing service could not be shutdown.", e);
+//    }
   }
 
   @Override
