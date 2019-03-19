@@ -194,6 +194,12 @@ public class IoTDBEngine implements ITSEngine {
 
   @Override
   public void close() throws IOException {
+    // sleep 10s  to wait all backstage task
+    try {
+      Thread.sleep(1000*10);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     // close all filenode manger
     try {
       FileNodeManager.getInstance().closeAll();
