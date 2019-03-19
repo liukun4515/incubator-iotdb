@@ -43,6 +43,8 @@ public interface ITSEngine {
 
   QueryDataSet query(String timeseries, long startTime, long endTime) throws IOException;
 
+  void endQuery();
+
   IoTDBOptions getOptions();
 
   void setStorageGroup(String storageGroup) throws IOException;

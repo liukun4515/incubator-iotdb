@@ -7,7 +7,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -42,6 +42,7 @@ import org.apache.iotdb.db.metadata.MManager;
 import org.apache.iotdb.db.qp.QueryProcessor;
 import org.apache.iotdb.db.qp.executor.OverflowQPExecutor;
 import org.apache.iotdb.db.query.control.FileReaderManager;
+import org.apache.iotdb.db.query.control.QueryTokenManager;
 import org.apache.iotdb.db.service.CloseMergeService;
 import org.apache.iotdb.db.writelog.manager.MultiFileLogNodeManager;
 import org.apache.iotdb.db.writelog.manager.WriteLogNodeManager;
@@ -228,6 +229,13 @@ public class IoTDBEngine implements ITSEngine {
     } catch (FileNodeManagerException e) {
       e.printStackTrace();
       throw new IOException(e);
+    }
+  }
+  public void endQuery(){
+    try {
+      QueryTokenManager.getInstance().endQueryForCurrentRequestThread();
+    } catch (FileNodeManagerException e) {
+      e.printStackTrace();
     }
   }
 
