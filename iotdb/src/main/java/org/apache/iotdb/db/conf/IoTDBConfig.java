@@ -187,7 +187,7 @@ public class IoTDBConfig {
    * size of each record (tuple). 1 is JVMMemController, which uses the JVM heap memory as the
    * memory usage indicator.
    */
-  public int memControllerType = 1;
+  public int memControllerType = 0;
   /**
    * When a bufferwrite's metadata size (in byte) exceed this, the bufferwrite is forced closed.
    */
