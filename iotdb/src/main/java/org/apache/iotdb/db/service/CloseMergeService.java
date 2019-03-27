@@ -73,7 +73,7 @@ public class CloseMergeService implements IService {
   /**
    * start service.
    */
-  public void startService() {
+  private synchronized void startService() {
     if (dbConfig.enableTimingCloseAndMerge) {
       if (!isStart) {
         LOGGER.info("Start the close and merge service");
@@ -92,7 +92,7 @@ public class CloseMergeService implements IService {
   /**
    * close service.
    */
-  public void closeService() {
+  private synchronized void closeService() {
     if (dbConfig.enableTimingCloseAndMerge) {
       if (isStart) {
         LOGGER.info("Prepare to shutdown the close and merge service.");
