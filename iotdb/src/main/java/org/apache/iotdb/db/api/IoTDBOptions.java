@@ -104,4 +104,17 @@ public class IoTDBOptions {
   public void setOverflowFileSizeThreshold(long overflowFileSizeThreshold) {
     this.overflowFileSizeThreshold = overflowFileSizeThreshold;
   }
+
+  @Override
+  public String toString() {
+    return "IoTDBOptions{" +
+        "walPath='" + walPath + '\'' +
+        ", periodTimeForFlush=" + periodTimeForFlush +
+        ", periodTimeForMerge=" + periodTimeForMerge +
+        ", bufferwriteMetaSizeThreshold=" + bufferwriteMetaSizeThreshold +
+        ", bufferwriteFileSizeThreshold=" + bufferwriteFileSizeThreshold +
+        ", overflowMetaSizeThreshold=" + overflowMetaSizeThreshold +
+        ", overflowFileSizeThreshold=" + overflowFileSizeThreshold +
+        '}';
+  }
 }
