@@ -117,8 +117,9 @@ public class FileReaderManager implements IService {
 
       TsFileSequenceReader tsFileReader = isUnClosed ? new UnClosedTsFileReader(filePath)
           : new TsFileSequenceReader(filePath);
-
-      fileReaderMap.put(filePath, tsFileReader);
+      if(!isUnClosed){
+        fileReaderMap.put(filePath, tsFileReader);
+      }
       return tsFileReader;
     }
 
