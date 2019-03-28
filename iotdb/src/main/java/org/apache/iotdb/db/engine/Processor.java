@@ -19,6 +19,7 @@
 package org.apache.iotdb.db.engine;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.apache.iotdb.db.engine.bufferwrite.BufferWriteProcessor;
@@ -128,6 +129,15 @@ public abstract class Processor {
    */
   public boolean tryWriteLock() {
     return lock.writeLock().tryLock();
+  }
+
+  public boolean tryWriteLock(long timeout){
+    try {
+      return lock.writeLock().tryLock(timeout, TimeUnit.MILLISECONDS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    return false;
   }
 
   /**

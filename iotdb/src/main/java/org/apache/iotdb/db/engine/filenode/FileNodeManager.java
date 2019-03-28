@@ -940,7 +940,7 @@ public class FileNodeManager implements IStatistic, IService {
     if (processorMap.containsKey(processorName)) {
       LOGGER.info("Try to close the filenode processor {}.", processorName);
       FileNodeProcessor processor = processorMap.get(processorName);
-      if (processor.tryWriteLock()) {
+      if (processor.tryWriteLock(1000)) {
         try {
           if (processor.canBeClosed()) {
             try {

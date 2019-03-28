@@ -69,13 +69,16 @@ public class OneThreadWrite {
     for (int i = 0; i < 1000; i++) {
       db.write(deviceid, i, measurementIDs, values);
     }
-    QueryDataSet dataSet = db.query("root.beijing.d0.s0",100,200);
-    int count = 0;
-    while(dataSet.hasNext()){
-      count++;
-      dataSet.next();
+    for (int i = 0; i < 10; i++) {
+      QueryDataSet dataSet = db.query("root.beijing.d0.s0", 100, 200);
+      int count = 0;
+      while (dataSet.hasNext()) {
+        count++;
+        dataSet.next();
+      }
+      System.out.println("==========="+count);
+      db.endQuery();
     }
-    System.out.println(count);
     db.close();
     FileUtils.deleteDirectory(file);
   }
