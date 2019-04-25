@@ -143,12 +143,12 @@ public class IoTDBEngine implements ITSEngine {
       throw new IoTDBEngineException(e);
     }
     // 恢复FileReaderManager
-    try {
+//    try {
       FileReaderManager.getInstance().start();
-    } catch (StartupException e) {
-      e.printStackTrace();
-      throw new IoTDBEngineException(e);
-    }
+//    } catch (StartupException e) {
+//      e.printStackTrace();
+//      throw new IoTDBEngineException(e);
+//    }
     // 启动WAL模块
     try {
       MultiFileLogNodeManager.getInstance().start();
